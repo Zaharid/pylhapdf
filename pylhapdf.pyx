@@ -1,5 +1,10 @@
 #cython: embedsignature=True, c_string_type=str, c_string_encoding=utf8
 
+cimport cython
+
+cimport numpy as np
+from libcpp.map cimport map
+
 cimport clhapdf as c
 from clhapdf cimport FlavorScheme
 from libcpp.string cimport string
@@ -96,6 +101,17 @@ cdef class PDF:
     def alphasQ2(self, q2):
         "Return alpha_s at q2"
         return self._ptr.alphasQ2(q2)
+
+    def channel_factor(self, map[int, vector[int]] channel_dictionary,
+            int[:, ::1] channel,
+            double[: ,::1] x1, double [:,::1] x2, double[:, ::1] q):
+        cdef np.ndarray[np.double, ndim=1] res = np.zeros(len(x1))
+        for i, (chindex, x1val, x2val, qval) in  enumerate(zip(channel, x1, x2, q)):
+            chvals = channel_dictionary[chindex]
+            for chval in chvals:
+                res[i] += self._ptr.xfxQ(chval, x1val, qval)*self._ptr.xfxQ(chval, x2val, qval)
+        return res
+
 
     def xfxQ(self, *args):
         """Return the PDF xf(x,Q2) value for the given parton ID, x, and Q values.

@@ -16,7 +16,8 @@ cdef extern from "../../include/LHAPDF/Paths.h" namespace "LHAPDF":
 
 cdef extern from "../../include/LHAPDF/PDF.h" namespace "LHAPDF":
     cdef cppclass PDF:
-        double xfxQ(int, double, double) except +
+        double xfxQ_nogil "xfxQ"(int, double, double) nogil
+        double xfxQ(int, double, double) except+
         double xfxQ2(int, double, double) except +
         map[int,double] xfxQ(double, double) except +
         map[int,double] xfxQ2(double, double) except +

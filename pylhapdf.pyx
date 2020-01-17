@@ -2,6 +2,7 @@
 
 cimport cython
 
+import numpy as np
 cimport numpy as np
 from libcpp.map cimport map
 
@@ -9,6 +10,8 @@ cimport clhapdf as c
 from clhapdf cimport FlavorScheme
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.utility cimport pair
+
 try:
     from itertools import izip as zip
 except ImportError: # python 3.x version
@@ -102,14 +105,34 @@ cdef class PDF:
         "Return alpha_s at q2"
         return self._ptr.alphasQ2(q2)
 
-    def channel_factor(self, map[int, vector[int]] channel_dictionary,
-            int[:, ::1] channel,
-            double[: ,::1] x1, double [:,::1] x2, double[:, ::1] q):
-        cdef np.ndarray[np.double, ndim=1] res = np.zeros(len(x1))
-        for i, (chindex, x1val, x2val, qval) in  enumerate(zip(channel, x1, x2, q)):
-            chvals = channel_dictionary[chindex]
-            for chval in chvals:
-                res[i] += self._ptr.xfxQ(chval, x1val, qval)*self._ptr.xfxQ(chval, x2val, qval)
+    @cython.boundscheck(False)
+    @cython.wraparound(False)
+    def channel_factor(
+            self,
+            map[int, vector[pair[int, int]]] channel_dictionary,
+            int[::1] channel,
+            double[::1] x1,
+            double [::1] x2,
+            double[::1] q
+    ):
+        cdef Py_ssize_t size = x1.shape[0]
+        cdef np.ndarray[np.float64_t, ndim=1] res = np.zeros(size, dtype=np.float64)
+        cdef Py_ssize_t i, chindex, flpair_index
+        cdef double x1val, x2val, qval
+        cdef int chval1, chval2
+        cdef Py_ssize_t chsize
+        cdef c.PDF* _ptr = self._ptr
+        with nogil:
+            for i in range(size):
+                chindex = channel[i]
+                chsize = channel_dictionary[chindex].size()
+                x1val = x1[i]
+                x2val = x2[i]
+                qval = q[i]
+                for flpair_index in range(chsize):
+                    chval1 = channel_dictionary[chindex][flpair_index].first
+                    chval2 = channel_dictionary[chindex][flpair_index].second
+                    res[i] += _ptr.xfxQ_nogil(chval1, x1val, qval)*self._ptr.xfxQ_nogil(chval2, x2val, qval)
         return res
 
 

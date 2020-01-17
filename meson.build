@@ -16,7 +16,7 @@ py3_mod = import('python')
 pyx_c = custom_target('pylhapdf_cpp_generated_src',
   output : 'pylhapdf.cpp',
   input : ['pylhapdf.pyx', 'clhapdf.pxd'],
-  command : [cython, '--cplus' , '-3' , '@INPUT0@', '-o', '@OUTPUT@'],
+  command : [cython, '-a', '--cplus' , '-3' , '@INPUT0@', '-o', '@OUTPUT@'],
 )
 
 

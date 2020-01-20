@@ -1,0 +1,25 @@
+package:
+    name: "pylhapdf"
+    version: "0.1"
+
+source:
+    git_url: ../
+
+requirements:
+    build:
+        - {{ compiler("cxx") }}
+        - cython
+        - meson
+        - ninja
+    host:
+        - pkgconfig
+        - lhapdf
+        - numpy
+        - python
+    run:
+        - lhapdf
+        - numpy
+
+about:
+    home: "https://zigzah.com"
+    licence: "SECRET"

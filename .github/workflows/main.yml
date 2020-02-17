@@ -16,6 +16,7 @@ jobs:
         python-version: "3.7"
 
     - name: Run a multi-line script
+      shell: bash
       run: |
         conda config --append channels https://packages.nnpdf.science/conda
         conda install meson ninja lhapdf pkgconfig --yes

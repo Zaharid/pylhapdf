@@ -1,0 +1,27 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: macos
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - uses: goanpeca/setup-miniconda@v1
+      with:
+        auto-update-conda: true
+        python-version: "3.7"
+
+    - name: Run a multi-line script
+      run: |
+        conda config --append channels https://packages.nnpdf.science/conda
+        conda install meson ninja lhapdf pkgconfig --yes
+        mkdir bld
+        cd bld
+        meson ..
+        ninja
+        ninja install
+        python -c 'import pylhapdf'

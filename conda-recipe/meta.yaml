@@ -13,12 +13,17 @@ requirements:
         - ninja
     host:
         - pkgconfig
+        - cython
         - lhapdf
         - numpy
         - python
     run:
         - lhapdf
         - numpy
+
+test:
+  imports:
+    - pylhapdf
 
 about:
     home: "https://zigzah.com"

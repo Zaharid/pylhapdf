@@ -1,3 +1,4 @@
+# distutils: language=c++
 #cython: embedsignature=True, c_string_type=str, c_string_encoding=utf8
 # cython: linetrace=True
 

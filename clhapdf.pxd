@@ -1,3 +1,4 @@
+# distutils: language=c++
 from libcpp.string cimport string
 from libcpp.map cimport map
 from libcpp.vector cimport vector

@@ -25,6 +25,6 @@ jobs:
         mkdir bld
         cd bld
         meson ..
-        ninja
+        ninja -vvv
         ninja install
         python -c 'import pylhapdf'

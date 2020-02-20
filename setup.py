@@ -9,7 +9,7 @@ numpy_includes = numpy.get_include()
 ext = Extension(
     "pylhapdf",
     ["pylhapdf.pyx"],
-    extra_compile_args=["-std=c++17"],
+    extra_compile_args=["-std=c++14"],
     include_dirs=[numpy_includes],
     language="C++",
     libraries=["LHAPDF"],

@@ -3,22 +3,24 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+    build:
+        strategy:
+            matrix:
+                os: [ubuntu-latest, macos-latest]
+                python-version: ["3.8", "3.9"]
 
-    runs-on: macos
+        steps:
+          - uses: actions/checkout@v2
 
-    steps:
-    - uses: actions/checkout@v2
-      
-    - uses: goanpeca/setup-miniconda@v1
-      with:
-        auto-update-conda: true
-        python-version: "3.7"
+          - uses: goanpeca/setup-miniconda@v1
+            with:
+                auto-update-conda: true
+                python-version: "3.7"
 
-    - name: Run a multi-line script
-      shell: bash -l {0}
-      run: |
-        conda activate
-        conda config --append channels https://packages.nnpdf.science/conda
-        conda install boa --yes
-        conda mambabuild conda-recipe
+          - name: Run a multi-line script
+            shell: bash -l {0}
+            run: |
+                conda activate
+                conda config --append channels https://packages.nnpdf.science/conda
+                conda install boa --yes
+                conda mambabuild conda-recipe

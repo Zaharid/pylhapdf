@@ -10,7 +10,7 @@ requirements:
         - {{ compiler("cxx") }}
         - cython
         - lhapdf
-        - numpy
+        - numpy =1.20
     host:
         - pkgconfig
         - cython

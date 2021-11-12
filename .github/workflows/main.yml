@@ -12,6 +12,7 @@ jobs:
         runs-on: ${{ matrix.os }}
 
         steps:
+
           - uses: actions/checkout@v2
 
           - uses: conda-incubator/setup-miniconda@v2
@@ -34,3 +35,22 @@ jobs:
                 conda activate
                 conda install boa --yes
                 conda mambabuild conda-recipe
+
+          - name: Install SSH key
+            uses: shimataro/ssh-key-action@v2
+            with:
+                key: ${{ secrets.SSH_KEY }}
+                known_hosts: ${{ secrets.KNOWN_HOSTS }}
+
+          - name: Upload
+            shell: bash -l {0}
+            run: |
+                if [ "$RUNNER_OS" = "Linux" ]; then
+                    OSFOLDER=linux-64
+                elif [ "$RUNNER_OS" = "macOS" ]; then
+                    OSFOLDER=osx-64
+                else
+                    exit 41
+                fi
+                scp ${CONDA_PREFIX}/conda-bld/${OSFOLDER}/*.tar.bz2 dummy@packages.nnpdf.science:~/packages/conda/${OSFOLDER}
+

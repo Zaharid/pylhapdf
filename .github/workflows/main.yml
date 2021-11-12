@@ -16,12 +16,13 @@ jobs:
 
           - uses: conda-incubator/setup-miniconda@v2
             with:
+                mamba-version: "*"
                 python-version: ${{ matrix.python-version }}
+                channels: "https://packages.nnpdf.science/conda,conda-forge,defaults"
 
           - name: Run a multi-line script
             shell: bash -l {0}
             run: |
                 conda activate
-                conda config --append channels https://packages.nnpdf.science/conda
                 conda install boa --yes
                 conda mambabuild conda-recipe

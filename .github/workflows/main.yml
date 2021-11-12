@@ -25,14 +25,14 @@ jobs:
             if: startsWith(matrix.os, 'macOS')
             shell: bash -l {0}
             run: |
-                conda activate
+                conda activate test
                 curl -L -O https://data.nnpdf.science/MacOSX10.9.sdk.tar.xz
                 tar xfz MacOSX10.9.sdk.tar.xz -C $CONDA_PREFIX
 
           - name: Run a multi-line script
             shell: bash -l {0}
             run: |
-                conda activate
+                conda activate test
                 conda install boa --yes
                 conda mambabuild conda-recipe
 
@@ -45,7 +45,7 @@ jobs:
           - name: Upload
             shell: bash -l {0}
             run: |
-                conda activate
+                conda activate test
                 if [ "$RUNNER_OS" = "Linux" ]; then
                     OSFOLDER=linux-64
                 elif [ "$RUNNER_OS" = "macOS" ]; then

@@ -18,7 +18,7 @@ jobs:
             with:
                 mamba-version: "*"
                 python-version: ${{ matrix.python-version }}
-                channels: "https://packages.nnpdf.science/conda,conda-forge,defaults"
+                channels: "https://packages.nnpdf.science/conda,conda-forge"
 
           - name: Install macOS SDK
             if: startsWith(matrix.os, 'macOS')

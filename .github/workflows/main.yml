@@ -20,6 +20,14 @@ jobs:
                 python-version: ${{ matrix.python-version }}
                 channels: "https://packages.nnpdf.science/conda,conda-forge,defaults"
 
+          - name: Install macOS SDK
+            if: startsWith(matrix.os, 'macOS')
+            shell: bash -l {0}
+            run: |
+                conda activate test
+                curl -L -O https://data.nnpdf.science/MacOSX10.9.sdk.tar.xz
+                tar xfz MacOSX10.9.sdk.tar.xz -C $CONDA_PREFIX
+
           - name: Run a multi-line script
             shell: bash -l {0}
             run: |

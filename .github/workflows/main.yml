@@ -18,7 +18,7 @@ jobs:
     - name: Run a multi-line script
       shell: bash -l {0}
       run: |
-        conda activate 
+        conda activate
         conda config --append channels https://packages.nnpdf.science/conda
-        conda install conda-build --yes
-        conda build conda-recipe
+        conda install boa --yes
+        conda mambabuild conda-recipe

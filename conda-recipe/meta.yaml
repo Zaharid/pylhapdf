@@ -9,9 +9,8 @@ requirements:
     build:
         - {{ compiler("cxx") }}
         - cython
-        - meson
-        - ninja
         - lhapdf
+        - numpy
     host:
         - pkgconfig
         - cython
